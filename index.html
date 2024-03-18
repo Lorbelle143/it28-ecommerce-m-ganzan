@@ -21,6 +21,17 @@
             max-width: 100px;
             max-height: 100px;
         }
+        .buy-button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .buy-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -33,6 +44,7 @@
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Availability</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +54,7 @@
                 <td>$10.00</td>
                 <td>100</td>
                 <td>Available</td>
+                <td><button class="buy-button" onclick="buyProduct('palmolive')">Buy</button></td>
             </tr>
             <tr>
                 <td><img src="https://imgs.search.brave.com/0WQNeXeOphf7v-OF3zpUZ06Y3yoc6y2jPCYIGOziUb8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/c2FyYXBub3cuY29t/L2Nkbi9zaG9wL3By/b2R1Y3RzL3N1bnNp/bGstYmVhdXR5LXN1/bnNpbGstc2hhbXBv/by1wZXJmZWN0LXN0/cmFpZ2h0LXB1cnBs/ZS1zaGFtcG9vLTI4/MjA0NjEyNTgzNTEx/LmpwZz92PTE2NDg3/NTM0NDAmd2lkdGg9/MTAwMA" alt="Product 2"></td>
@@ -49,6 +62,7 @@
                 <td>$10.00</td>
                 <td>100</td>
                 <td>Available</td>
+                <td><button class="buy-button" onclick="buyProduct('sunsilk')">Buy</button></td>
             </tr>
             <tr>
                 <td><img src="https://imgs.search.brave.com/yDiuOZ07WAIHFNpXi3_YV3xn7HqxEvnhTNpYPbKsvR8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NDEyU3hxRFJDb0wu/anBn" alt="Product 3"></td>
@@ -56,9 +70,17 @@
                 <td>$10.00</td>
                 <td>100</td>
                 <td>Available</td>
+                <td><button class="buy-button" onclick="buyProduct('creamsilk')">Buy</button></td>
             </tr>
             <!-- Add more rows as needed -->
-        </tbody>
+        </body>
     </table>
+
+    <script>
+        function buyProduct(productName) {
+            // You can add your logic here for buying the product
+            alert('You have bought ' + productName);
+        }
+    </script>
 </body>
 </html>
