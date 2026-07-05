@@ -1,124 +1,390 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Product Inventory</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        img {
-            max-width: 100px;
-            max-height: 100px;
-        }
-        .buy-button {
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .buy-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Silent Killers Shop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    :root { --primary: #1a1a2e; --accent: #e94560; --card-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; }
+
+    /* Navbar */
+    .navbar { background-color: var(--primary) !important; padding: 14px 0; box-shadow: 0 2px 12px rgba(0,0,0,.3); }
+    .navbar-brand { font-size: 1.4rem; font-weight: 700; color: #fff !important; letter-spacing: 1px; }
+    .navbar-brand span { color: var(--accent); }
+    .nav-link { color: rgba(255,255,255,.75) !important; font-weight: 500; transition: color .2s; }
+    .nav-link:hover, .nav-link.active { color: #fff !important; }
+    .nav-link.active { border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+    .navbar-toggler { border-color: rgba(255,255,255,.3); }
+    .navbar-toggler-icon { filter: invert(1); }
+    .search-box .form-control { border-radius: 20px 0 0 20px; border: none; background: rgba(255,255,255,.12); color: #fff; }
+    .search-box .form-control::placeholder { color: rgba(255,255,255,.5); }
+    .search-box .btn { border-radius: 0 20px 20px 0; background-color: var(--accent); border: none; color: #fff; }
+    .cart-btn { position: relative; background: rgba(255,255,255,.12); border: none; color: #fff; border-radius: 10px; padding: 8px 14px; font-size: 1.1rem; }
+    .cart-btn:hover { background: rgba(255,255,255,.22); color: #fff; }
+    .cart-badge { position: absolute; top: -6px; right: -6px; background: var(--accent); color: #fff; border-radius: 50%; width: 20px; height: 20px; font-size: .72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, var(--primary) 0%, #16213e 100%); color: #fff; padding: 70px 0 60px; text-align: center; }
+    .hero h1 { font-size: 2.6rem; font-weight: 800; margin-bottom: 12px; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size: 1.1rem; color: rgba(255,255,255,.7); max-width: 520px; margin: 0 auto 24px; }
+    .btn-shop { background-color: var(--accent); color: #fff; padding: 12px 32px; border-radius: 30px; font-weight: 600; font-size: 1rem; border: none; text-decoration: none; transition: background .2s, transform .2s; display: inline-block; }
+    .btn-shop:hover { background-color: #c73652; transform: translateY(-2px); color: #fff; }
+
+    /* Filters */
+    .filter-btn { border: 2px solid #e0e0e0; background: #fff; border-radius: 20px; padding: 6px 18px; font-size: .88rem; font-weight: 600; color: #666; cursor: pointer; transition: all .2s; }
+    .filter-btn:hover, .filter-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; }
+
+    /* Product cards */
+    .product-card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: var(--card-shadow); transition: transform .25s, box-shadow .25s; height: 100%; display: flex; flex-direction: column; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 28px rgba(0,0,0,0.14); }
+    .product-img-wrap { background: #f0f0f0; height: 200px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+    .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+    .product-card:hover .product-img-wrap img { transform: scale(1.06); }
+    .product-badge { position: absolute; top: 10px; left: 10px; background: var(--accent); color: #fff; font-size: .72rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+    .wishlist-btn { position: absolute; top: 10px; right: 10px; background: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,.12); transition: color .2s; }
+    .wishlist-btn.active, .wishlist-btn:hover { color: var(--accent); }
+    .product-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+    .product-name { font-weight: 700; font-size: 1rem; color: var(--primary); text-transform: capitalize; margin-bottom: 2px; }
+    .product-cat { font-size: .75rem; color: #aaa; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
+    .product-price { font-size: 1.2rem; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .product-stock { font-size: .82rem; color: #6c757d; margin-bottom: auto; }
+    .badge-available { background-color: #d4edda; color: #155724; border-radius: 20px; padding: 3px 10px; font-size: .75rem; font-weight: 600; }
+    .product-actions { display: flex; gap: 8px; margin-top: 14px; }
+    .btn-buy { flex: 1; background-color: var(--primary); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 600; font-size: .9rem; text-align: center; text-decoration: none; transition: background .2s; display: block; }
+    .btn-buy:hover { background-color: var(--accent); color: #fff; }
+    .btn-cart { background: #f0f0f0; border: none; border-radius: 8px; padding: 10px 14px; color: var(--primary); font-size: 1rem; transition: background .2s; }
+    .btn-cart:hover { background: #e0e0e0; }
+
+    /* Cart Offcanvas */
+    .offcanvas-header { background: var(--primary); color: #fff; }
+    .offcanvas-header .btn-close { filter: invert(1); }
+    .cart-item { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+    .cart-item-img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; background: #f0f0f0; }
+    .cart-item-name { font-weight: 700; font-size: .9rem; color: var(--primary); }
+    .cart-item-price { font-size: .88rem; color: var(--accent); font-weight: 700; }
+    .qty-control { display: flex; align-items: center; gap: 8px; }
+    .qty-btn { width: 26px; height: 26px; border-radius: 6px; border: 1.5px solid #e0e0e0; background: #fff; font-weight: 700; font-size: .9rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .qty-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .cart-remove { background: none; border: none; color: #ccc; font-size: 1.1rem; padding: 0; margin-left: auto; }
+    .cart-remove:hover { color: var(--accent); }
+    .cart-total-row { display: flex; justify-content: space-between; font-size: 1rem; font-weight: 800; color: var(--primary); padding: 16px 0 0; }
+    .cart-total-row span:last-child { color: var(--accent); }
+    .btn-checkout { background: linear-gradient(135deg, var(--accent), #c73652); color: #fff; border: none; border-radius: 12px; padding: 14px; font-weight: 700; font-size: 1rem; width: 100%; margin-top: 12px; }
+    .empty-cart { text-align: center; padding: 48px 0; color: #aaa; }
+    .empty-cart i { font-size: 3rem; display: block; margin-bottom: 12px; }
+
+    /* Features strip */
+    .features-strip { background: #fff; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; padding: 20px 0; }
+    .feature-item { display: flex; align-items: center; gap: 10px; }
+    .feature-item i { font-size: 1.4rem; color: var(--accent); }
+    .feature-item strong { font-size: .9rem; color: var(--primary); display: block; }
+    .feature-item span { font-size: .78rem; color: #888; }
+
+    /* Toast */
+    .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; }
+    .toast { min-width: 260px; }
+
+    /* Footer */
+    footer { background-color: var(--primary); color: rgba(255,255,255,.65); padding: 36px 0 20px; margin-top: 60px; }
+    .footer-brand { font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .footer-brand span { color: var(--accent); }
+    footer a { color: rgba(255,255,255,.6); text-decoration: none; font-size: .88rem; }
+    footer a:hover { color: var(--accent); }
+    .footer-divider { border-color: rgba(255,255,255,.1); margin: 20px 0 14px; }
+  </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="index.html"><i class="bi bi-bag-heart-fill me-2"></i>Silent<span>Killers</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-3">
+          <li class="nav-item"><a class="nav-link active" href="index.html"><i class="bi bi-house me-1"></i>Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="reports.html"><i class="bi bi-bar-chart me-1"></i>Reports</a></li>
+          <li class="nav-item"><a class="nav-link" href="logistics.html"><i class="bi bi-truck me-1"></i>Logistics</a></li>
+          <li class="nav-item"><a class="nav-link" href="customerservices.html"><i class="bi bi-headset me-1"></i>Support</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <form class="d-flex search-box">
+            <input class="form-control me-0" type="search" id="searchInput" placeholder="Search products…" oninput="searchProducts()" />
+            <button class="btn" type="submit"><i class="bi bi-search"></i></button>
+          </form>
+          <button class="cart-btn" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+            <i class="bi bi-cart3"></i>
+            <span class="cart-badge" id="cartCount">0</span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-              </li>
-            </ul>
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Cart Offcanvas -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" style="width:380px;">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title fw-bold"><i class="bi bi-cart3 me-2"></i>Your Cart</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+      <div id="cartItems" class="flex-grow-1"></div>
+      <div id="cartFooter" style="display:none;">
+        <div class="cart-total-row"><span>Total</span><span id="cartTotal">$0.00</span></div>
+        <a href="payment.html" class="btn-checkout d-block text-center text-decoration-none"><i class="bi bi-credit-card me-2"></i>Proceed to Checkout</a>
+        <button onclick="clearCart()" class="btn btn-outline-secondary w-100 mt-2" style="border-radius:10px;font-size:.88rem;">Clear Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Welcome to <span>Silent Killers</span> Shop</h1>
+      <p>Discover top-quality personal care products at unbeatable prices. Fast shipping, easy returns.</p>
+      <a href="#products" class="btn-shop"><i class="bi bi-lightning-fill me-2"></i>Shop Now</a>
+    </div>
+  </section>
+
+  <!-- Features Strip -->
+  <div class="features-strip">
+    <div class="container">
+      <div class="row g-3 justify-content-center">
+        <div class="col-6 col-md-3">
+          <div class="feature-item"><i class="bi bi-truck"></i><div><strong>Free Shipping</strong><span>On all orders</span></div></div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="feature-item"><i class="bi bi-arrow-counterclockwise"></i><div><strong>7-Day Returns</strong><span>Easy return policy</span></div></div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="feature-item"><i class="bi bi-shield-check"></i><div><strong>Secure Payment</strong><span>SSL encrypted</span></div></div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="feature-item"><i class="bi bi-headset"></i><div><strong>24/7 Support</strong><span>Always here for you</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <section class="py-5" id="products">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 style="font-size:1.4rem;font-weight:700;color:var(--primary);">Our Products</h2>
+        <span class="text-muted" style="font-size:.9rem;" id="productCount">3 items</span>
+      </div>
+      <!-- Category filters -->
+      <div class="d-flex gap-2 flex-wrap mb-4">
+        <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+        <button class="filter-btn" onclick="filterProducts('shampoo', this)">Shampoo</button>
+        <button class="filter-btn" onclick="filterProducts('soap', this)">Soap</button>
+        <button class="filter-btn" onclick="filterProducts('conditioner', this)">Conditioner</button>
+      </div>
+      <div class="row g-4" id="productGrid">
+
+        <!-- Product 1 -->
+        <div class="col-sm-6 col-lg-4 product-item" data-category="soap" data-name="palmolive">
+          <div class="product-card">
+            <div class="product-img-wrap">
+              <span class="product-badge">Hot</span>
+              <img src="https://imgs.search.brave.com/zh8cBqLQlHXxw1nCzmIQPYqaUpbJhD9gvRbUb_zh7Rg/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NzFUdmRabFFBNEwu/anBn" alt="Palmolive">
+              <button class="wishlist-btn" onclick="toggleWishlist(this)" title="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <div class="product-body">
+              <div class="product-name">Palmolive</div>
+              <div class="product-cat">Soap</div>
+              <div class="product-price">$10.00</div>
+              <div class="product-stock"><span class="badge-available"><i class="bi bi-check-circle-fill me-1"></i>In Stock</span> &nbsp;100 units</div>
+              <div class="product-actions">
+                <a class="btn-buy" href="payment.html"><i class="bi bi-lightning-fill me-1"></i>Buy Now</a>
+                <button class="btn-cart" onclick="addToCart('Palmolive', 10, this)" title="Add to Cart"><i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
           </div>
         </div>
-      </nav>
-    <h1>Silent Killers Shop</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Product Image</th>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Availability</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><img src="https://imgs.search.brave.com/zh8cBqLQlHXxw1nCzmIQPYqaUpbJhD9gvRbUb_zh7Rg/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NzFUdmRabFFBNEwu/anBn" alt="Product 1"></td>
-            <td>palmolive</td>
-            <td>$10.00</td>
-            <td>100</td>
-            <td>Available</td>
-            <td><a class="buy-button" href="payment.html">Buy</a></td>
-        </tr>
-        <tr>
-            <td><img src="https://imgs.search.brave.com/0WQNeXeOphf7v-OF3zpUZ06Y3yoc6y2jPCYIGOziUb8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/c2FyYXBub3cuY29t/L2Nkbi9zaG9wL3By/b2R1Y3RzL3N1bnNp/bGstYmVhdXR5LXN1/bnNpbGstc2hhbXBv/by1wZXJmZWN0LXN0/cmFpZ2h0LXB1cnBs/ZS1zaGFtcG9vLTI4/MjA0NjEyNTgzNTEx/LmpwZz92PTE2NDg3/NTM0NDAmd2lkdGg9/MTAwMA" alt="Product 2"></td>
-            <td>sunsilk</td>
-            <td>$10.00</td>
-            <td>100</td>
-            <td>Available</td>
-            <td><a class="buy-button" href="payment.html">Buy</a></td>
-        </tr>
-        <tr>
-            <td><img src="https://imgs.search.brave.com/yDiuOZ07WAIHFNpXi3_YV3xn7HqxEvnhTNpYPbKsvR8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NDEyU3hxRFJDb0wu/anBn" alt="Product 3"></td>
-            <td>creamsilk</td>
-            <td>$10.00</td>
-            <td>100</td>
-            <td>Available</td>
-            <td><a class="buy-button" href="payment.html">Buy</a></td>
-        </tr>
-        
-            <!-- Add more rows as needed -->
-        </body>
-    </table>
+        <!-- Product 2 -->
+        <div class="col-sm-6 col-lg-4 product-item" data-category="shampoo" data-name="sunsilk">
+          <div class="product-card">
+            <div class="product-img-wrap">
+              <span class="product-badge" style="background:#1967d2;">Best Seller</span>
+              <img src="https://imgs.search.brave.com/0WQNeXeOphf7v-OF3zpUZ06Y3yoc6y2jPCYIGOziUb8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/c2FyYXBub3cuY29t/L2Nkbi9zaG9wL3By/b2R1Y3RzL3N1bnNp/bGstYmVhdXR5LXN1/bnNpbGstc2hhbXBv/by1wZXJmZWN0LXN0/cmFpZ2h0LXB1cnBs/ZS1zaGFtcG9vLTI4/MjA0NjEyNTgzNTEx/LmpwZz92PTE2NDg3/NTM0NDAmd2lkdGg9/MTAwMA" alt="Sunsilk">
+              <button class="wishlist-btn" onclick="toggleWishlist(this)" title="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <div class="product-body">
+              <div class="product-name">Sunsilk</div>
+              <div class="product-cat">Shampoo</div>
+              <div class="product-price">$10.00</div>
+              <div class="product-stock"><span class="badge-available"><i class="bi bi-check-circle-fill me-1"></i>In Stock</span> &nbsp;100 units</div>
+              <div class="product-actions">
+                <a class="btn-buy" href="payment.html"><i class="bi bi-lightning-fill me-1"></i>Buy Now</a>
+                <button class="btn-cart" onclick="addToCart('Sunsilk', 10, this)" title="Add to Cart"><i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Product 3 -->
+        <div class="col-sm-6 col-lg-4 product-item" data-category="conditioner" data-name="creamsilk">
+          <div class="product-card">
+            <div class="product-img-wrap">
+              <img src="https://imgs.search.brave.com/yDiuOZ07WAIHFNpXi3_YV3xn7HqxEvnhTNpYPbKsvR8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NDEyU3hxRFJDb0wu/anBn" alt="Creamsilk">
+              <button class="wishlist-btn" onclick="toggleWishlist(this)" title="Add to Wishlist"><i class="bi bi-heart"></i></button>
+            </div>
+            <div class="product-body">
+              <div class="product-name">Creamsilk</div>
+              <div class="product-cat">Conditioner</div>
+              <div class="product-price">$10.00</div>
+              <div class="product-stock"><span class="badge-available"><i class="bi bi-check-circle-fill me-1"></i>In Stock</span> &nbsp;100 units</div>
+              <div class="product-actions">
+                <a class="btn-buy" href="payment.html"><i class="bi bi-lightning-fill me-1"></i>Buy Now</a>
+                <button class="btn-cart" onclick="addToCart('Creamsilk', 10, this)" title="Add to Cart"><i class="bi bi-cart-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- No results -->
+      <div id="noResults" style="display:none;" class="text-center py-5 text-muted">
+        <i class="bi bi-search" style="font-size:2.5rem;display:block;margin-bottom:12px;"></i>
+        <p>No products found. Try a different search.</p>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        function buyProduct(productName) {
-            // You can add your logic here for buying the product
-            alert('You have bought ' + productName);
-        }
-    </script>
+  <!-- Toast notification -->
+  <div class="toast-container">
+    <div id="cartToast" class="toast align-items-center text-bg-success border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body fw-bold"><i class="bi bi-cart-check me-2"></i><span id="toastMsg">Added to cart!</span></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="footer-brand">Silent<span>Killers</span></div>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.55);">Your trusted personal care store in Bukidnon, Philippines.</p>
+        </div>
+        <div class="col-md-4">
+          <p class="fw-bold text-white mb-2" style="font-size:.9rem;">Quick Links</p>
+          <div class="d-flex flex-column gap-1">
+            <a href="index.html">Home</a>
+            <a href="reports.html">Reports</a>
+            <a href="logistics.html">Logistics</a>
+            <a href="customerservices.html">Customer Support</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <p class="fw-bold text-white mb-2" style="font-size:.9rem;">Contact</p>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.55);">Manolo Fortich, Bukidnon, Philippines<br>support@silentkillers.com<br>+63 936 801 2296</p>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <p class="text-center mb-0" style="font-size:.82rem;">&copy; 2024 Silent Killers Shop. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let cart = JSON.parse(localStorage.getItem('sks_cart') || '[]');
+
+    function saveCart() { localStorage.setItem('sks_cart', JSON.stringify(cart)); }
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      const footer = document.getElementById('cartFooter');
+      const badge = document.getElementById('cartCount');
+      const totalEl = document.getElementById('cartTotal');
+      const totalItems = cart.reduce((s, i) => s + i.qty, 0);
+      badge.textContent = totalItems;
+      if (!cart.length) {
+        container.innerHTML = `<div class="empty-cart"><i class="bi bi-cart-x"></i><p>Your cart is empty</p><a href="#products" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="offcanvas">Browse Products</a></div>`;
+        footer.style.display = 'none'; return;
+      }
+      footer.style.display = 'block';
+      let total = 0;
+      container.innerHTML = cart.map((item, i) => {
+        total += item.price * item.qty;
+        return `<div class="cart-item">
+          <div class="cart-item-img" style="background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🧴</div>
+          <div class="flex-grow-1">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
+            <div class="qty-control mt-1">
+              <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>
+              <span style="font-size:.9rem;font-weight:700;">${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+            </div>
+          </div>
+          <button class="cart-remove" onclick="removeItem(${i})"><i class="bi bi-x-lg"></i></button>
+        </div>`;
+      }).join('');
+      totalEl.textContent = '$' + total.toFixed(2);
+    }
+
+    function addToCart(name, price, btn) {
+      const idx = cart.findIndex(i => i.name === name);
+      if (idx > -1) cart[idx].qty++;
+      else cart.push({ name, price, qty: 1 });
+      saveCart(); renderCart();
+      const toast = new bootstrap.Toast(document.getElementById('cartToast'));
+      document.getElementById('toastMsg').textContent = name + ' added to cart!';
+      toast.show();
+      btn.innerHTML = '<i class="bi bi-cart-check"></i>';
+      setTimeout(() => btn.innerHTML = '<i class="bi bi-cart-plus"></i>', 1500);
+    }
+
+    function changeQty(i, delta) {
+      cart[i].qty += delta;
+      if (cart[i].qty <= 0) cart.splice(i, 1);
+      saveCart(); renderCart();
+    }
+
+    function removeItem(i) { cart.splice(i, 1); saveCart(); renderCart(); }
+    function clearCart() { cart = []; saveCart(); renderCart(); }
+
+    function toggleWishlist(btn) {
+      btn.classList.toggle('active');
+      btn.querySelector('i').className = btn.classList.contains('active') ? 'bi bi-heart-fill' : 'bi bi-heart';
+    }
+
+    function filterProducts(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const items = document.querySelectorAll('.product-item');
+      let visible = 0;
+      items.forEach(el => {
+        const match = cat === 'all' || el.dataset.category === cat;
+        el.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      document.getElementById('productCount').textContent = visible + ' item' + (visible !== 1 ? 's' : '');
+      document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    function searchProducts() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const items = document.querySelectorAll('.product-item');
+      let visible = 0;
+      items.forEach(el => {
+        const match = el.dataset.name.includes(q) || el.dataset.category.includes(q);
+        el.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      document.getElementById('productCount').textContent = visible + ' item' + (visible !== 1 ? 's' : '');
+      document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    renderCart();
+  </script>
 </body>
 </html>

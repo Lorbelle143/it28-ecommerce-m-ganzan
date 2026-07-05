@@ -1,113 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Services</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f7f7f7;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        p {
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-        .contact-info {
-            border-top: 1px solid #ccc;
-            padding-top: 20px;
-            margin-top: 20px;
-        }
-        .contact-info h2 {
-            color: #007bff;
-            margin-bottom: 10px;
-        }
-        .contact-info p {
-            margin-bottom: 10px;
-        }
-        .contact-form {
-            margin-top: 20px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        .form-group textarea {
-            height: 120px;
-        }
-        .form-group button {
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .form-group button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Support — Silent Killers Shop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    :root { --primary: #1a1a2e; --accent: #e94560; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
+
+    /* Navbar */
+    .navbar { background-color: var(--primary) !important; padding: 14px 0; box-shadow: 0 2px 12px rgba(0,0,0,.3); }
+    .navbar-brand { font-size: 1.4rem; font-weight: 700; color: #fff !important; letter-spacing: 1px; }
+    .navbar-brand span { color: var(--accent); }
+    .nav-link { color: rgba(255,255,255,.75) !important; font-weight: 500; }
+    .nav-link:hover, .nav-link.active { color: #fff !important; }
+    .nav-link.active { border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+    .navbar-toggler-icon { filter: invert(1); }
+
+    /* Page header */
+    .page-header {
+      background: linear-gradient(135deg, var(--primary), #16213e);
+      color: #fff; padding: 48px 0 36px; text-align: center;
+    }
+    .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 6px; }
+    .page-header p { color: rgba(255,255,255,.65); margin: 0; }
+
+    /* Contact cards */
+    .contact-card {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.07);
+      padding: 28px 20px; text-align: center;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .contact-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,.12); }
+    .contact-icon {
+      width: 60px; height: 60px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin: 0 auto 14px;
+    }
+    .contact-icon.red { background: #fce8e6; color: var(--accent); }
+    .contact-icon.blue { background: #e8f0fe; color: #1967d2; }
+    .contact-icon.green { background: #e6f4ea; color: #1e8e3e; }
+    .contact-card h6 { font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+    .contact-card p { font-size: .88rem; color: #666; margin: 0; }
+    .contact-card a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: .9rem; }
+    .contact-card a:hover { text-decoration: underline; }
+
+    /* Main card */
+    .main-card { background: #fff; border-radius: 16px; box-shadow: 0 6px 30px rgba(0,0,0,.08); overflow: hidden; }
+    .card-header-custom {
+      background: var(--primary); color: #fff;
+      padding: 18px 28px; font-size: 1rem; font-weight: 700;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .card-header-custom i { color: var(--accent); font-size: 1.2rem; }
+    .card-body-custom { padding: 32px; }
+
+    /* Form */
+    .form-label { font-weight: 600; font-size: .88rem; color: #444; margin-bottom: 6px; }
+    .form-control, .form-select {
+      border-radius: 10px; border: 1.5px solid #e0e0e0;
+      padding: 11px 14px; font-size: .95rem;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-control:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(233,69,96,.12); }
+    .input-group-text {
+      background: #f8f9fa; border: 1.5px solid #e0e0e0;
+      border-right: none; border-radius: 10px 0 0 10px; color: #888;
+    }
+    .input-group .form-control { border-radius: 0 10px 10px 0; }
+    .btn-send {
+      background: linear-gradient(135deg, var(--accent), #c73652);
+      color: #fff; border: none; border-radius: 10px;
+      padding: 12px 32px; font-weight: 700; font-size: .95rem;
+      transition: opacity .2s, transform .2s;
+    }
+    .btn-send:hover { opacity: .9; transform: translateY(-1px); color: #fff; }
+
+    /* FAQ */
+    .accordion-button:not(.collapsed) {
+      background-color: #fff5f7; color: var(--accent); font-weight: 700;
+      box-shadow: none;
+    }
+    .accordion-button:focus { box-shadow: 0 0 0 3px rgba(233,69,96,.15); }
+    .accordion-button { font-weight: 600; color: var(--primary); border-radius: 10px !important; }
+    .accordion-item { border: 1.5px solid #e0e0e0; border-radius: 10px !important; margin-bottom: 10px; overflow: hidden; }
+
+    /* Footer */
+    footer { background-color: var(--primary); color: rgba(255,255,255,.65); padding: 24px 0; margin-top: 60px; text-align: center; font-size: .88rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
 </head>
 <body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
     <div class="container">
-        <h1>Customer Services</h1>
-        <p>Welcome to our customer services page. If you have any questions, concerns, or feedback, please feel free to contact us using the information below.</p>
-        
-        <div class="contact-info">
-            <h2>Contact Information</h2>
-            <p>Email: lorbelleganzan.com</p>
-            <p>Phone: 09368012296</p>
-            <p>Address:  Manolo fortich bukidnon, Philippines</p>
-        </div>
-        
-        <div class="contact-form">
-            <h2>Send us a Message</h2>
-            <form>
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                <div class="form-group">
-                    <button type="submit">Send Message</button>
-                </div>
-            </form>
-        </div>
+      <a class="navbar-brand" href="index.html"><i class="bi bi-bag-heart-fill me-2"></i>Silent<span>Killers</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto ms-3">
+          <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house me-1"></i>Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="reports.html"><i class="bi bi-bar-chart me-1"></i>Reports</a></li>
+          <li class="nav-item"><a class="nav-link" href="logistics.html"><i class="bi bi-truck me-1"></i>Logistics</a></li>
+          <li class="nav-item"><a class="nav-link active" href="customerservices.html"><i class="bi bi-headset me-1"></i>Support</a></li>
+        </ul>
+      </div>
     </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1><i class="bi bi-headset me-2"></i>Customer Support</h1>
+      <p>We're here to help. Reach out anytime and we'll get back to you as soon as possible.</p>
+    </div>
+  </div>
+
+  <div class="container py-5">
+
+    <!-- Contact Info Cards -->
+    <div class="row g-3 mb-5">
+      <div class="col-md-4">
+        <div class="contact-card">
+          <div class="contact-icon red"><i class="bi bi-envelope-fill"></i></div>
+          <h6>Email Us</h6>
+          <p class="mb-2">We reply within 24 hours</p>
+          <a href="mailto:support@silentkillers.com">support@silentkillers.com</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="contact-card">
+          <div class="contact-icon blue"><i class="bi bi-telephone-fill"></i></div>
+          <h6>Call Us</h6>
+          <p class="mb-2">Mon–Sat, 8 AM – 6 PM</p>
+          <a href="tel:+639368012296">+63 936 801 2296</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="contact-card">
+          <div class="contact-icon green"><i class="bi bi-geo-alt-fill"></i></div>
+          <h6>Visit Us</h6>
+          <p class="mb-2">Our store location</p>
+          <a href="#">Manolo Fortich, Bukidnon, PH</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 align-items-start">
+
+      <!-- Contact Form -->
+      <div class="col-lg-7">
+        <div class="main-card">
+          <div class="card-header-custom"><i class="bi bi-chat-dots-fill"></i> Send Us a Message</div>
+          <div class="card-body-custom">
+            <form id="contactForm" onsubmit="submitForm(event)">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Full Name</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <input type="text" class="form-control" placeholder="Your full name" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email Address</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                    <input type="email" class="form-control" placeholder="you@example.com" required />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Subject</label>
+                  <select class="form-select">
+                    <option value="" disabled selected>Select a topic…</option>
+                    <option>Order Issue</option>
+                    <option>Delivery Concern</option>
+                    <option>Product Inquiry</option>
+                    <option>Return / Refund</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Message</label>
+                  <textarea class="form-control" rows="5" placeholder="Describe your concern in detail…" required></textarea>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn-send"><i class="bi bi-send-fill me-2"></i>Send Message</button>
+                </div>
+              </div>
+            </form>
+            <div id="formSuccess" class="alert alert-success mt-3" style="display:none;">
+              <i class="bi bi-check-circle-fill me-2"></i><strong>Message sent!</strong> We'll get back to you within 24 hours.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="col-lg-5">
+        <div class="main-card">
+          <div class="card-header-custom"><i class="bi bi-question-circle-fill"></i> Frequently Asked Questions</div>
+          <div class="card-body-custom">
+            <div class="accordion accordion-flush" id="faqAccordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                    How do I track my order?
+                  </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse">
+                  <div class="accordion-body" style="font-size:.9rem; color:#555;">
+                    Go to the <a href="logistics.html">Logistics</a> page and enter your tracking number. You'll see the real-time status of your shipment.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    What payment methods do you accept?
+                  </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse">
+                  <div class="accordion-body" style="font-size:.9rem; color:#555;">
+                    We accept Cash on Delivery (COD), GCash, Credit/Debit Card, and Bank Transfer.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                    How long does delivery take?
+                  </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse">
+                  <div class="accordion-body" style="font-size:.9rem; color:#555;">
+                    Standard delivery within Bukidnon takes 2–3 business days. Metro areas may take 3–5 business days.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                    Can I return or exchange a product?
+                  </button>
+                </h2>
+                <div id="faq4" class="accordion-collapse collapse">
+                  <div class="accordion-body" style="font-size:.9rem; color:#555;">
+                    Yes. We accept returns and exchanges within 7 days of delivery. Items must be unused and in original packaging.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                    Is free shipping available?
+                  </button>
+                </h2>
+                <div id="faq5" class="accordion-collapse collapse">
+                  <div class="accordion-body" style="font-size:.9rem; color:#555;">
+                    Yes! We offer free shipping on all orders. No minimum purchase required.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Ticket Tracker -->
+  <div class="container pb-5">
+    <div class="main-card">
+      <div class="card-header-custom"><i class="bi bi-ticket-perforated-fill"></i> Track Your Support Ticket</div>
+      <div class="card-body-custom">
+        <p class="text-muted mb-3" style="font-size:.9rem;">Enter your ticket number to check the status of your concern.</p>
+        <div class="d-flex gap-2 flex-wrap">
+          <input type="text" class="form-control" id="ticketInput" placeholder="e.g. TKT-2024-0012" style="max-width:280px;" />
+          <button class="btn-send px-4" style="padding:10px 24px;border-radius:10px;" onclick="trackTicket()"><i class="bi bi-search me-2"></i>Check Status</button>
+        </div>
+        <div id="ticketResult" class="mt-4"></div>
+
+        <!-- Sample tickets table -->
+        <h6 class="fw-bold mt-4 mb-3" style="color:var(--primary);">Recent Tickets</h6>
+        <div class="table-responsive">
+          <table class="table" style="font-size:.88rem;">
+            <thead style="background:#f8f9fa;">
+              <tr>
+                <th class="py-2">Ticket #</th><th>Subject</th><th>Date Filed</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="fw-bold text-primary">TKT-2024-0012</td>
+                <td>Order not received</td><td>Jul 3, 2024</td>
+                <td><span class="badge bg-warning-subtle text-warning rounded-pill px-2">In Progress</span></td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-primary">TKT-2024-0008</td>
+                <td>Wrong item delivered</td><td>Jun 28, 2024</td>
+                <td><span class="badge bg-success-subtle text-success rounded-pill px-2">Resolved</span></td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-primary">TKT-2024-0015</td>
+                <td>Refund request</td><td>Jul 4, 2024</td>
+                <td><span class="badge bg-primary-subtle text-primary rounded-pill px-2">Open</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p class="mb-1"><strong style="color:#fff;">Silent Killers Shop</strong></p>
+      <p class="mb-0">Manolo Fortich, Bukidnon, Philippines &nbsp;|&nbsp; <a href="mailto:support@silentkillers.com">support@silentkillers.com</a></p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function submitForm(e) {
+      e.preventDefault();
+      document.getElementById('contactForm').reset();
+      document.getElementById('formSuccess').style.display = 'block';
+      setTimeout(() => { document.getElementById('formSuccess').style.display = 'none'; }, 5000);
+    }
+
+    function trackTicket() {
+      const val = document.getElementById('ticketInput').value.trim().toUpperCase();
+      const result = document.getElementById('ticketResult');
+      const tickets = {
+        'TKT-2024-0012': { subject: 'Order not received', status: 'In Progress', color: 'warning', date: 'Jul 3, 2024', agent: 'Support Team A' },
+        'TKT-2024-0008': { subject: 'Wrong item delivered', status: 'Resolved', color: 'success', date: 'Jun 28, 2024', agent: 'Support Team B' },
+        'TKT-2024-0015': { subject: 'Refund request', status: 'Open', color: 'primary', date: 'Jul 4, 2024', agent: 'Unassigned' },
+      };
+      if (!val) { result.innerHTML = `<div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-2"></i>Please enter a ticket number.</div>`; return; }
+      const t = tickets[val];
+      if (t) {
+        result.innerHTML = `<div class="alert alert-${t.color === 'warning' ? 'warning' : t.color === 'success' ? 'success' : 'info'}">
+          <strong><i class="bi bi-ticket me-2"></i>${val}</strong> — ${t.subject}<br>
+          <small>Status: <strong>${t.status}</strong> &nbsp;|&nbsp; Filed: ${t.date} &nbsp;|&nbsp; Agent: ${t.agent}</small>
+        </div>`;
+      } else {
+        result.innerHTML = `<div class="alert alert-danger"><i class="bi bi-x-circle me-2"></i>No ticket found for <strong>${val}</strong>.</div>`;
+      }
+    }
+    document.getElementById('ticketInput').addEventListener('keydown', e => { if (e.key === 'Enter') trackTicket(); });
+  </script>
 </body>
 </html>
